@@ -44,6 +44,44 @@ public class RoiRealRandomAccessibleRealInterval implements RealRandomAccessible
 
     public RoiRealRandomAccessibleRealInterval(Roi roi) {
         this.roi = roi;
+
+        final Rectangle bounds = roi.getBounds();
+        boundingBox = Intervals.createMinMaxReal(new double[]{bounds.getX(), bounds.getY(), bounds.getX() + bounds.getWidth() - 1, bounds.getY() + bounds.getHeight() - 1});
+    }
+
+    @Override
+    public boolean contains(RealLocalizable realLocalizable) {
+        if (Intervals.contains(boundingBox, realLocalizable)) {
+            if (roi.contains((int) realLocalizable.getDoublePosition(0), (int) realLocalizable.getDoublePosition(1))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public double realMin(int i) {
+        return boundingBox.realMin(i);
+    }
+
+    @Override
+    public void realMin(double[] doubles) {
+        boundingBox.realMin(doubles);
+    }
+
+    @Override
+    public void realMin(RealPositionable realPositionable) {
+        boundingBox.realMin(realPositionable);
+    }
+
+    @Override
+    public double realMax(int i) {
+        return boundingBox.realMax(i);
+    }
+
+    @Override
+    public void realMax(double[] doubles) {
+        boundingBox.realMax(doubles);
     }
 
     @Override
@@ -64,5 +102,10 @@ public class RoiRealRandomAccessibleRealInterval implements RealRandomAccessible
     @Override
     public Contains<RealLocalizable> copyContains() {
         return this;
+    }
+
+    @Override
+    public int numDimensions() {
+        return boundingBox.numDimensions();
     }
 }
