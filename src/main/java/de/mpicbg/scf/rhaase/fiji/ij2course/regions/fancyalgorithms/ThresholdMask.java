@@ -56,7 +56,7 @@ public class ThresholdMask<T extends RealType<T>> {
         input.dimensions(dimensions);
         Img<BitType> output = ArrayImgs.bits(dimensions);
 
-        // normalize all pixels
+        // threshold the image
         Cursor<T> inputCursor = Views.flatIterable(input).cursor();
         Cursor<BitType> outputCursor = output.cursor();
 
